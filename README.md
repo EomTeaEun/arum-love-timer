@@ -57,6 +57,22 @@ npm run dev                        # http://localhost:3000
 npm run build
 ```
 
+### 개발자 디버그 모드
+
+4분 타이머를 매번 기다리지 않고 테스트하려면 URL에 `?debug=1`을 붙여서 접속한다
+(예: `http://localhost:3000/?debug=1`). 브라우저 콘솔(F12)에서 아래 함수들을 바로 호출할 수 있다.
+
+```js
+debugArum.setTimeLeft(5)       // 타이머를 5초로 강제 변경 (곧 엔딩으로 전환됨)
+debugArum.setLove(60)          // 호감도를 60으로 강제 변경
+debugArum.skipToEnding()       // 현재 호감도 기준으로 즉시 엔딩 전환
+debugArum.setPhase("main")     // start/gamerule/diary/intro/main/endingHappy/endingBad로 즉시 이동
+debugArum.setEndingStep(2)     // 엔딩 컷신 단계 이동
+```
+
+`debug=1` 없이 접속하면 `window.debugArum`은 생성되지 않는다 (부스 방문객이 우연히
+발견해서 타이머를 스킵할 수 없도록).
+
 ### 환경 변수
 
 | 변수 | 설명 |

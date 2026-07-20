@@ -95,6 +95,30 @@ export default function Home() {
     return () => clearInterval(timerIdRef.current);
   }, [timerActive, forceEnding]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!window.location.search.includes("debug=1")) return;
+
+    window.debugArum = {
+      setTimeLeft: (seconds) => setTimeLeft(seconds),
+      setLove: (n) => setLove(clampLove(n)),
+      skipToEnding: () => forceEnding(),
+      setPhase: (p) => setPhase(p),
+      setEndingStep: (n) => setEndingStep(n),
+    };
+
+    // eslint-disable-next-line no-console
+    console.log(
+      "%c[debug] window.debugArum 사용 가능",
+      "color:#ff8fab;font-weight:bold;",
+      "\n- debugArum.setTimeLeft(초)  : 타이머 값 강제 변경 (0에 가까우면 곧 엔딩 전환)",
+      "\n- debugArum.setLove(숫자)    : 호감도 강제 변경",
+      "\n- debugArum.skipToEnding()   : 즉시 현재 호감도 기준으로 엔딩 전환",
+      "\n- debugArum.setPhase(이름)   : start/gamerule/diary/intro/main/endingHappy/endingBad",
+      "\n- debugArum.setEndingStep(n) : 엔딩 컷신 단계 이동"
+    );
+  }, [forceEnding]);
+
   function handleGreetingClick() {
     setTimerActive(true);
     setMainStep("input");
