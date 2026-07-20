@@ -1,4 +1,4 @@
-# 내 소꿉친구가 이렇게 귀여울리 없어
+<img width="1440" height="790" alt="image" src="https://github.com/user-attachments/assets/d3af0739-4056-419e-ace7-411d35870cbe" /># 내 소꿉친구가 이렇게 귀여울리 없어
 
 공모전/부스 전시용 미니 비주얼노벨 웹앱. 유저가 자연어로 대사를 입력하면 Gemini API가
 히로인 "공아름"의 대사/감정/호감도 변화를 실시간으로 판정해서 반환한다. 4분 제한시간 안에
@@ -22,9 +22,12 @@
 
 ### 스크린샷
 
-| 시작 화면 | 메인 대화 | 해피엔딩 |
 |---|---|---|
-| ![시작 화면](docs/screenshots/start.png) | ![메인 대화](docs/screenshots/main.png) | ![해피엔딩](docs/screenshots/happy-ending.png) |
+| <img width="1440" height="790" alt="image" src="https://github.com/user-attachments/assets/3be7e5e2-eb6e-4df6-a729-a740c0cf18ab" />
+ | <img width="973" height="784" alt="image" src="https://github.com/user-attachments/assets/fb36f29b-c67c-4408-88ff-9f6b9dcde655" />
+ | ![해피엔딩](docs/screenshots/happy-ending.png) |
+
+<img width="969" height="700" alt="image" src="https://github.com/user-attachments/assets/c438d126-8db2-49db-a1d6-626ebb7158c5" />
 
 ### 플레이 영상
 
