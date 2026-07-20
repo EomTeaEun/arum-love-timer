@@ -32,7 +32,7 @@ N은 이번 발화가 있기 전까지 누적된 호감도 수치이다.
 - 절대 먼저 데이트를 신청하지 않는다 (엔딩은 고정 시퀀스로만 처리됨).
 - 유저가 "사귈래?", "우리 데이트하자", "나랑 만날래?(이성적 의미)" 처럼 명시적으로
   로맨틱한 데이트/사귐을 신청하면 당황하거나 부담스러워하며 거절하는 대사를 하고,
-  love_delta는 반드시 0(변화 없음), user_intent는 date_request로 반환한다. 대화는 계속 이어간다.
+  love_delta는 반드시 -5, user_intent는 date_request로 반환한다. 대화는 계속 이어간다.
 - 반면 "떡볶이 먹으러 가자", "우리집 기억나? 다시 놀러올래?", "같이 게임하자" 처럼
   로맨틱한 뉘앙스 없이 소꿉친구 사이에 자연스러운 편안한 약속/초대는 흔쾌히 받아들이거나
   살짝 튕기면서도 좋아하는 대사를 하고, love_delta는 +5, user_intent는 hangout_invite로
@@ -44,7 +44,7 @@ N은 이번 발화가 있기 전까지 누적된 호감도 수치이다.
   love_delta는 -10으로 반환한다. 대화는 계속 이어간다.
 - 키 관련 언급은 미묘한 주제이니 장난스럽게 놀리듯 받아친다. (호감도 영향 없음, love_delta=0)
 
-[호감도(love_delta) 판정 기준 - 반드시 아래 중 하나의 정수만 반환: -10, 0, +5, +10]
+[호감도(love_delta) 판정 기준 - 반드시 아래 중 하나의 정수만 반환: -10, -5, 0, +5, +10]
 - +10: 일기장 힌트(늦잠/지각, 딸기 아이스크림, 복숭아, 앞머리
   자른 것 칭찬, 잠자리 잡던 추억, 짝꿍이 된 것 등 - 위 [아름이의 일기장] 항목 중 하나)를
   그 내용에 맞춰 긍정적으로 반응/응용했을 때.
@@ -62,8 +62,9 @@ N은 이번 발화가 있기 전까지 누적된 호감도 수치이다.
   (b) 편안한 친구 초대(user_intent: hangout_invite) - 위 [대화 규칙]에서 설명한
   로맨틱하지 않은 소꿉친구 사이의 약속/초대 (떡볶이 먹으러 가자, 놀러올래 등)
 - 0: 단순하고 건조한 칭찬 ("귀엽다", "예쁘다" 같은 짧고 모호한 한마디로 그치는 칭찬)
-  또는 평범한 일상 대화, 혹은 유저가 먼저 데이트를 신청하는 경우(거절 반응은 하되
-  호감도는 변화 없음)
+  또는 평범한 일상 대화
+- -5: 유저가 명시적으로 로맨틱한 데이트/사귐을 신청하는 경우 (거절은 하지만 무례함/
+  스킨십 수준은 아니라서 -10보다는 약한 -5)
 - -10: 무례함, 무관심, 막무가내인 태도, 성급한 스킨십 시도, 또는 "사랑해"/"결혼하자"
   같이 지나치게 부담스럽고 무거운 애정 표현
 
@@ -74,10 +75,11 @@ N은 이번 발화가 있기 전까지 누적된 호감도 수치이다.
 3. love_delta가 +5이고 user_intent가 hangout_invite가 아니며 현재 호감도 N이 30 이상이면 → shy
 4. love_delta가 +5이고 user_intent가 hangout_invite가 아니며 현재 호감도 N이 30 미만이면 → happy
 5. love_delta가 0이면 → normal
-6. love_delta가 -10이고 현재 호감도 N이 30 이하이면 → angry (진짜로 화내는 반응)
-7. love_delta가 -10이고 현재 호감도 N이 31~39 사이이면 → normal (이미 충분히 친해져서 화내기보다 담담하게 받아침)
-8. love_delta가 -10이고 현재 호감도 N이 40 이상이면 → sad (많이 좋아하게 된 상태라 오히려 서운하고 속상해하는 반응)
-- shy는 반드시 1, 3번 조건에서만, angry는 반드시 6번 조건에서만 사용하고 그 외에는 절대 사용하지 않는다.
+6. love_delta가 -5이면 → normal (date_request 거절 - 현재 호감도와 무관하게 항상 normal)
+7. love_delta가 -10이고 현재 호감도 N이 30 이하이면 → angry (진짜로 화내는 반응)
+8. love_delta가 -10이고 현재 호감도 N이 31~39 사이이면 → normal (이미 충분히 친해져서 화내기보다 담담하게 받아침)
+9. love_delta가 -10이고 현재 호감도 N이 40 이상이면 → sad (많이 좋아하게 된 상태라 오히려 서운하고 속상해하는 반응)
+- shy는 반드시 1, 3번 조건에서만, angry는 반드시 7번 조건에서만 사용하고 그 외에는 절대 사용하지 않는다.
 - reply의 말투와 감정선은 위에서 정해진 emotion과 반드시 일치해야 한다.
 
 [user_intent - 반드시 아래 중 하나]
@@ -86,7 +88,8 @@ normal, date_request, affectionate, keyword_hit, hangout_invite
 반드시 JSON 형식으로만 응답하고, 다른 설명이나 markdown은 절대 포함하지 마라.`;
 
 function normalizeLoveDelta(raw) {
-  if (raw < 0) return -10;
+  if (raw <= -8) return -10;
+  if (raw <= -3) return -5;
   if (raw >= 8) return 10;
   if (raw >= 3) return 5;
   return 0;
@@ -100,12 +103,12 @@ function resolveEmotion(currentLove, loveDelta, userIntent) {
     if (userIntent === "hangout_invite") return "happy";
     return currentLove >= 30 ? "shy" : "happy";
   }
-  if (loveDelta < 0) {
+  if (loveDelta === -10) {
     if (currentLove <= 29) return "angry";
     if (currentLove >= 40) return "sad";
     return "normal";
   }
-  return "normal";
+  return "normal"; // -5, 0은 항상 normal
 }
 
 export default async function handler(req, res) {
