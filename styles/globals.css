@@ -21,13 +21,23 @@ body {
   justify-content: center;
 }
 
-/* 4:3 고정 비율 박스. 창이 어떤 비율이든 4:3을 유지한 채 화면에 꽉 차게
-   맞추고, 남는 공간은 body의 검은 배경(레터박스/필러박스)으로 채운다. */
+/* 고정 비율 박스. 창이 어떤 비율이든 지정된 비율을 유지한 채 화면에 꽉 차게
+   맞추고, 남는 공간은 body의 검은 배경(레터박스/필러박스)으로 채운다.
+   - ratio-16-9: start/gamerule/diary, 엔딩 컷신처럼 원본 아트가 16:9인 풀스크린 연출용
+   - ratio-4-3: intro/main처럼 캐릭터+대화창이 합성되는 실제 게임 플레이 화면용 */
 .app-container {
   position: relative;
+  overflow: hidden;
+}
+
+.app-container.ratio-4-3 {
   width: min(100vw, 133.3333vh);
   height: min(100vh, 75vw);
-  overflow: hidden;
+}
+
+.app-container.ratio-16-9 {
+  width: min(100vw, 177.7778vh);
+  height: min(100vh, 56.25vw);
 }
 
 /* 풀스크린 클릭 전환 화면 (start / gamerule / diary) */

@@ -169,7 +169,7 @@ export default function Home() {
 
     if (step.finalImage) {
       return (
-        <div className="app-container">
+        <div className="app-container ratio-16-9">
           <img src={step.finalImage} alt="엔딩" className="fullscreen-image" />
           <button className="restart-btn" onClick={handleRestart}>
             다시 하기
@@ -178,12 +178,12 @@ export default function Home() {
       );
     }
 
-    const containerClass = step.black ? "black-scene" : "scene";
-    const containerStyle = step.black ? {} : { backgroundImage: `url(${step.bg})` };
+    const sceneClass = step.black ? "black-scene" : "scene";
+    const sceneStyle = step.black ? {} : { backgroundImage: `url(${step.bg})` };
 
     return (
-      <div className="app-container">
-        <div className={containerClass} style={containerStyle}>
+      <div className="app-container ratio-16-9">
+        <div className={sceneClass} style={sceneStyle}>
           {step.center && (
             <div className="center-image-wrap">
               <img src={step.center} alt="" className="center-image" />
@@ -210,7 +210,7 @@ export default function Home() {
 
   if (phase === "start") {
     content = (
-      <div className="app-container">
+      <div className="app-container ratio-16-9">
         <div className="fullscreen-click" onClick={() => setPhase("gamerule")}>
           <img src="/images/start.png" alt="시작" className="fullscreen-image" />
         </div>
@@ -218,7 +218,7 @@ export default function Home() {
     );
   } else if (phase === "gamerule") {
     content = (
-      <div className="app-container">
+      <div className="app-container ratio-16-9">
         <div className="fullscreen-click" onClick={() => setPhase("diary")}>
           <img src="/images/gamerule.png" alt="게임 규칙" className="fullscreen-image" />
         </div>
@@ -226,7 +226,7 @@ export default function Home() {
     );
   } else if (phase === "diary") {
     content = (
-      <div className="app-container">
+      <div className="app-container ratio-16-9">
         <div className="fullscreen-click" onClick={() => setPhase("intro")}>
           <img src="/images/diary.png" alt="아름이의 일기장" className="fullscreen-image" />
         </div>
@@ -234,7 +234,7 @@ export default function Home() {
     );
   } else if (phase === "intro") {
     content = (
-      <div className="app-container">
+      <div className="app-container ratio-4-3">
         <div
           className="scene clickable"
           style={{ backgroundImage: "url(/images/start_background.png)" }}
@@ -251,7 +251,7 @@ export default function Home() {
     );
   } else if (phase === "main") {
     content = (
-      <div className="app-container">
+      <div className="app-container ratio-4-3">
         <div
           className="scene"
           style={{ backgroundImage: "url(/images/main_background.png)" }}
