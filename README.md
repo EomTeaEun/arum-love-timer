@@ -22,7 +22,6 @@
 
 ### 스크린샷
 
-| 시작 화면 | 메인 대화 | 해피엔딩 |
 |---|---|---|
 | <img width="1440" height="790" alt="image" src="https://github.com/user-attachments/assets/3be7e5e2-eb6e-4df6-a729-a740c0cf18ab" />
  | <img width="973" height="784" alt="image" src="https://github.com/user-attachments/assets/fb36f29b-c67c-4408-88ff-9f6b9dcde655" />
