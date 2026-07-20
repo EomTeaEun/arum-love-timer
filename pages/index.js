@@ -331,7 +331,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>여름, 짝꿍, 공아름</title>
+        <title>내 소꿉친구가 이렇게 귀여울리 없어</title>
       </Head>
       {content}
     </>
