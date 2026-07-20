@@ -11,7 +11,7 @@ const INTRO_LINES = [
   "과연 난, 한정된 시간 안에 그녀의 마음을 얻을 수 있을까?",
 ];
 
-const GREETING_TEXT = "안녕?";
+const GREETING_TEXT = "흥..딱히 짝꿍이 됐다고 기쁜건 아니라구?... 잘 지냈어?";
 
 const ENDING_HAPPY_STEPS = [
   { bg: "/images/end_background.png", text: "휴... 내가 잘 한걸까..." },
@@ -147,6 +147,7 @@ export default function Home() {
         signal: controller.signal,
       });
 
+      if (res.status === 429) throw new Error("RATE_LIMITED");
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
 
@@ -160,7 +161,11 @@ export default function Home() {
       setMainStep("response");
     } catch (err) {
       if (controller.signal.aborted) return;
-      setErrorMsg("아름이에게 연락이 닿지 않았어. 다시 시도해줘.");
+      setErrorMsg(
+        err.message === "RATE_LIMITED"
+          ? "(API 요청 횟수 한도 초과)"
+          : "아름이에게 연락이 닿지 않았어. 다시 시도해줘."
+      );
       setMainStep("input");
     }
   }

@@ -158,6 +158,10 @@ export default async function handler(req, res) {
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
       console.error("Gemini API error:", errText);
+      if (geminiRes.status === 429) {
+        res.status(429).json({ error: "rate_limited" });
+        return;
+      }
       res.status(502).json({ error: "Gemini API request failed" });
       return;
     }
