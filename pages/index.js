@@ -30,6 +30,7 @@ const ENDING_BAD_STEPS = [
     bg: "/images/badend.png",
     text: "그녀에게 새 남자친구가 생겼다는 소식이었고, 나는 그녀와 영원히 이루어질 수 없었다.",
     final: true,
+    contain: true,
   },
 ];
 
@@ -179,7 +180,12 @@ export default function Home() {
     }
 
     const sceneClass = step.black ? "black-scene" : "scene";
-    const sceneStyle = step.black ? {} : { backgroundImage: `url(${step.bg})` };
+    const sceneStyle = step.black
+      ? {}
+      : {
+          backgroundImage: `url(${step.bg})`,
+          ...(step.contain && { backgroundSize: "contain", backgroundColor: "#000" }),
+        };
 
     return (
       <div className="app-container ratio-16-9">
