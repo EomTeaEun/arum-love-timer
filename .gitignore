@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+.env.local
+.DS_Store
+.claude/settings.local.json
+
+# 원본 이미지 소스 덤프 (실제 배포에 쓰이는 건 public/images/ 이므로 중복 커밋 방지)
+/images

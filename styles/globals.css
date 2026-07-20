@@ -1,0 +1,228 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  background: #000;
+}
+
+#__next {
+  width: 100%;
+  height: 100%;
+}
+
+.app-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 풀스크린 클릭 전환 화면 (start / gamerule / diary) */
+.fullscreen-click {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background: #000;
+}
+
+.fullscreen-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+
+/* 배경이 있는 씬(인트로/메인/엔딩) */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.scene.clickable {
+  cursor: pointer;
+}
+
+/* 캐릭터 스프라이트 (배경 위, 대화창 아래) */
+.character-sprite {
+  position: absolute;
+  left: 50%;
+  bottom: 20%;
+  transform: translateX(-50%);
+  height: 74%;
+  max-width: 90%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 우측 상단 HUD: 타이머 + 호감도 */
+.hud {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  text-align: right;
+  color: #fff;
+  text-shadow: 0 0 6px #000, 0 0 3px #000, 1px 1px 2px #000;
+  z-index: 20;
+  font-weight: bold;
+  user-select: none;
+}
+
+.hud .timer {
+  font-size: 1.7rem;
+  letter-spacing: 1px;
+}
+
+.hud .love {
+  font-size: 1.15rem;
+  margin-top: 4px;
+}
+
+/* 대화창 (화면 하단) */
+.dialogue-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 32%;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2% 8%;
+  z-index: 10;
+}
+
+.dialogue-box.clickable {
+  cursor: pointer;
+}
+
+.dialogue-text {
+  color: #000;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  text-align: center;
+  max-width: 820px;
+  width: 100%;
+}
+
+.loading-text {
+  color: #000;
+  font-size: 1.15rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 820px;
+  align-items: center;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 22px;
+  border: 1px solid #999;
+  font-size: 1rem;
+  color: #000;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.input-row input::placeholder {
+  color: #555;
+}
+
+.input-row button {
+  padding: 12px 22px;
+  border-radius: 22px;
+  border: none;
+  background: #ff8fab;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.input-row button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.input-hint {
+  align-self: flex-end;
+  font-size: 0.8rem;
+  color: #333;
+  margin-top: 4px;
+  max-width: 820px;
+  width: 100%;
+  text-align: right;
+}
+
+/* 검은 화면 + 대화창만 표시 (엔딩 중간 컷) */
+.black-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* 중앙 이미지 표시 (happy_phone 등) */
+.center-image-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.center-image {
+  max-width: 72%;
+  max-height: 72%;
+  object-fit: contain;
+}
+
+/* 다시하기 버튼 */
+.restart-btn {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  border-radius: 26px;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 30;
+}
+
+.error-text {
+  color: #b00020;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 6px;
+}
