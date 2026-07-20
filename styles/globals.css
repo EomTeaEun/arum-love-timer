@@ -221,8 +221,7 @@ body {
 .restart-btn {
   position: absolute;
   bottom: 6%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 5%;
   padding: 14px 32px;
   font-size: 1.1rem;
   border-radius: 26px;
