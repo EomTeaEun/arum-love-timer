@@ -16,13 +16,17 @@ body {
 #__next {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* 4:3 고정 비율 박스. 창이 어떤 비율이든 4:3을 유지한 채 화면에 꽉 차게
+   맞추고, 남는 공간은 body의 검은 배경(레터박스/필러박스)으로 채운다. */
 .app-container {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
+  position: relative;
+  width: min(100vw, 133.3333vh);
+  height: min(100vh, 75vw);
   overflow: hidden;
 }
 
