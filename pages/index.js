@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const TOTAL_TIME = 240;
+const TOTAL_TIME = 150;
 const LOVE_THRESHOLD = 50;
 const MAX_INPUT_LEN = 50;
 

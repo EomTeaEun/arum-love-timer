@@ -124,6 +124,7 @@ function resolveEmotion(currentLove, loveDelta, userIntent) {
 }
 
 export default async function handler(req, res) {
+  const reqStart = Date.now();
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
     return;
@@ -153,6 +154,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    const fetchStart = Date.now();
+    console.log(`[chat] request received (+${fetchStart - reqStart}ms), calling Gemini...`);
     const geminiRes = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`,
       {
@@ -182,6 +185,9 @@ export default async function handler(req, res) {
         }),
       }
     );
+
+    const geminiElapsed = Date.now() - fetchStart;
+    console.log(`[chat] Gemini responded in ${geminiElapsed}ms (status ${geminiRes.status})`);
 
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
@@ -219,9 +225,10 @@ export default async function handler(req, res) {
     const reply =
       typeof parsed.reply === "string" && parsed.reply.trim() ? parsed.reply.trim() : "음...";
 
+    console.log(`[chat] total handler time ${Date.now() - reqStart}ms`);
     res.status(200).json({ reply, emotion, love_delta, user_intent });
   } catch (err) {
-    console.error("chat API error:", err);
+    console.error(`[chat] error after ${Date.now() - reqStart}ms:`, err);
     res.status(500).json({ error: "Internal server error" });
   }
 }
