@@ -2,7 +2,7 @@
 
 ## 프로젝트 개요
 "내 소꿉친구가 이렇게 귀여울리 없어" — 공모전/부스 전시용 미니 비주얼노벨 웹앱.
-유저가 자연어로 대사를 입력하면 Gemini API가 히로인의 대사/감정/호감도 변화를
+유저가 자연어로 대사를 입력하면 OpenAI API가 히로인의 대사/감정/호감도 변화를
 실시간으로 판정해서 반환한다. 2분 30초 제한시간 안에 호감도 임계값(50) 도달 여부로
 해피엔딩/배드엔딩이 갈린다.
 
@@ -13,7 +13,7 @@ GAME_FLOW.md의 내용을 우선한다.
 ## 기술 스택
 - Next.js (Pages Router 유지, App Router로 마이그레이션하지 말 것)
 - 배포: Vercel
-- LLM: Gemini API (`gemini-flash-lite-latest`), 반드시 `pages/api/chat.js` 같은
+- LLM: OpenAI API (`gpt-4.1-mini`, `OPENAI_MODEL` env로 변경 가능), 반드시 `pages/api/chat.js` 같은
   서버리스 API route 안에서만 호출한다. API 키를 클라이언트 번들에 절대 노출하지 않는다.
 - 스타일: 순수 CSS (Tailwind 등 추가 프레임워크 도입하지 말 것 — 기존 구조 유지)
 - 상태관리: React useState/useEffect로 충분함. 별도 상태관리 라이브러리 불필요.

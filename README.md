@@ -1,6 +1,6 @@
 # 내 소꿉친구가 이렇게 귀여울리 없어
 
-2026 충남대학교 엔지니어링 페어 컴퓨터인공지능학부 부스 전시용 미니 비주얼노벨 웹앱. 유저가 자연어로 대사를 입력하면 Gemini API가
+2026 충남대학교 엔지니어링 페어 컴퓨터인공지능학부 부스 전시용 미니 비주얼노벨 웹앱. 유저가 자연어로 대사를 입력하면 OpenAI API가
 히로인 "공아름"의 대사/감정/호감도 변화를 실시간으로 판정해서 반환한다. 2분 30초 제한시간 안에
 호감도 임계값(50) 도달 여부로 해피엔딩/배드엔딩이 갈린다.
 
@@ -37,7 +37,7 @@ START → GAMERULE → DIARY → INTRO → MAIN → (2분 30초 타이머 종료
 ## 기술 스택
 
 - **Next.js 14** (Pages Router — App Router로 마이그레이션하지 않음)
-- **LLM**: Gemini API, 서버리스 API route(`pages/api/chat.js`)에서만 호출 (API 키는
+- **LLM**: OpenAI API (`gpt-4.1-mini`), 서버리스 API route(`pages/api/chat.js`)에서만 호출 (API 키는
   클라이언트에 절대 노출되지 않음)
 - **스타일**: 순수 CSS (`styles/globals.css`), 별도 CSS 프레임워크 없음
 - **상태관리**: React `useState`/`useEffect`만 사용, 별도 상태관리 라이브러리 없음
@@ -49,7 +49,7 @@ START → GAMERULE → DIARY → INTRO → MAIN → (2분 30초 타이머 종료
 
 ```bash
 npm install
-cp .env.local.example .env.local   # GEMINI_API_KEY 값 채워넣기
+cp .env.local.example .env.local   # OPENAI_API_KEY 값 채워넣기
 npm run dev                        # http://localhost:3000
 ```
 
@@ -79,12 +79,12 @@ debugArum.setEndingStep(2)     // 엔딩 컷신 단계 이동
 
 | 변수 | 설명 |
 |---|---|
-| `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey)에서 발급받는 Gemini API 키. `.env.local`에만 저장하고 절대 커밋하지 않는다. |
+| `OPENAI_API_KEY` | [OpenAI 대시보드](https://platform.openai.com/api-keys)에서 발급받는 API 키. `.env.local`에만 저장하고 절대 커밋하지 않는다. |
+| `OPENAI_MODEL` | (선택) 사용할 모델. 비워두면 `gpt-4.1-mini`. |
 
-현재 `pages/api/chat.js`가 호출하는 모델은 `gemini-flash-lite-latest`다. 무료 티어 기준
-모델별 일일 요청 한도가 낮은 편이라(모델에 따라 하루 20회 수준까지도 있었음), 부스
-당일 트래픽이 많을 것으로 예상되면 사전에 [Google AI Studio](https://aistudio.google.com)
-대시보드에서 쿼터를 확인하거나 결제 계정을 등록해두는 것을 권장한다.
+현재 `pages/api/chat.js`가 호출하는 모델은 기본값 `gpt-4.1-mini`다 (`OPENAI_MODEL`로 변경 가능).
+부스 당일 전에 [OpenAI 대시보드](https://platform.openai.com/settings/organization/billing/overview)에서
+크레딧 잔액을 확인해 둔다. 크레딧이 $0이 되면 API 호출이 멈춘다 (Auto-reload OFF 기준).
 
 ## 프로젝트 구조
 
@@ -92,7 +92,7 @@ debugArum.setEndingStep(2)     // 엔딩 컷신 단계 이동
 pages/
   _app.js          # 글로벌 스타일 로드
   index.js         # 전체 상태머신(START~ENDING) + 화면 렌더링
-  api/chat.js       # Gemini 호출 서버리스 함수 (시스템 프롬프트, 호감도/감정 판정)
+  api/chat.js       # OpenAI 호출 서버리스 함수 (시스템 프롬프트, 호감도/감정 판정)
 styles/
   globals.css       # 비주얼노벨 레이아웃(배경/캐릭터/대화창/HUD) 전역 스타일
 public/images/      # 배경, 캐릭터 스프라이트, 대화창, 엔딩 이미지 (GAME_FLOW.md 에셋 매핑 표 참고)

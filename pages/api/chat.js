@@ -147,64 +147,69 @@ export default async function handler(req, res) {
   if (!Number.isFinite(currentLove)) currentLove = 0;
   currentLove = Math.max(0, Math.min(100, Math.round(currentLove)));
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    res.status(500).json({ error: "GEMINI_API_KEY is not configured" });
+    res.status(500).json({ error: "OPENAI_API_KEY is not configured" });
     return;
   }
+  const model = process.env.OPENAI_MODEL || "gpt-4.1-mini";
 
   try {
     const fetchStart = Date.now();
-    console.log(`[chat] request received (+${fetchStart - reqStart}ms), calling Gemini...`);
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: `[현재 호감도: ${currentLove}]\n유저 발화: "${trimmed}"` }],
-            },
-          ],
-          generationConfig: {
-            responseMimeType: "application/json",
-            responseSchema: {
-              type: "OBJECT",
+    console.log(`[chat] request received (+${fetchStart - reqStart}ms), calling OpenAI (${model})...`);
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: `[현재 호감도: ${currentLove}]\n유저 발화: "${trimmed}"` },
+        ],
+        max_tokens: 300,
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "arum_reply",
+            strict: true,
+            schema: {
+              type: "object",
               properties: {
-                reply: { type: "STRING" },
-                emotion: { type: "STRING", enum: EMOTIONS },
-                love_delta: { type: "INTEGER" },
-                user_intent: { type: "STRING", enum: INTENTS },
+                reply: { type: "string" },
+                emotion: { type: "string", enum: EMOTIONS },
+                love_delta: { type: "integer" },
+                user_intent: { type: "string", enum: INTENTS },
               },
               required: ["reply", "emotion", "love_delta", "user_intent"],
+              additionalProperties: false,
             },
           },
-        }),
-      }
-    );
+        },
+      }),
+    });
 
-    const geminiElapsed = Date.now() - fetchStart;
-    console.log(`[chat] Gemini responded in ${geminiElapsed}ms (status ${geminiRes.status})`);
+    const openaiElapsed = Date.now() - fetchStart;
+    console.log(`[chat] OpenAI responded in ${openaiElapsed}ms (status ${openaiRes.status})`);
 
-    if (!geminiRes.ok) {
-      const errText = await geminiRes.text();
-      console.error("Gemini API error:", errText);
-      if (geminiRes.status === 429) {
+    if (!openaiRes.ok) {
+      const errText = await openaiRes.text();
+      console.error("OpenAI API error:", errText);
+      if (openaiRes.status === 429) {
         res.status(429).json({ error: "rate_limited" });
         return;
       }
-      res.status(502).json({ error: "Gemini API request failed" });
+      res.status(502).json({ error: "OpenAI API request failed" });
       return;
     }
 
-    const data = await geminiRes.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const data = await openaiRes.json();
+    const text = data?.choices?.[0]?.message?.content;
 
     if (!text) {
-      res.status(502).json({ error: "Empty response from Gemini" });
+      res.status(502).json({ error: "Empty response from OpenAI" });
       return;
     }
 
@@ -212,8 +217,8 @@ export default async function handler(req, res) {
     try {
       parsed = JSON.parse(text);
     } catch (e) {
-      console.error("Failed to parse Gemini JSON:", text);
-      res.status(502).json({ error: "Invalid JSON from Gemini" });
+      console.error("Failed to parse OpenAI JSON:", text);
+      res.status(502).json({ error: "Invalid JSON from OpenAI" });
       return;
     }
 
