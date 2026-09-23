@@ -45,6 +45,8 @@ START → GAMERULE → DIARY → INTRO → MAIN → (2분 30초 타이머 종료
 
 ## 로컬 실행
 
+> 새 컴퓨터에서 처음 세팅하는 경우 [SETTING_GUIDE.md](./SETTING_GUIDE.md)를 참고.
+
 ```bash
 npm install
 cp .env.local.example .env.local   # GEMINI_API_KEY 값 채워넣기
